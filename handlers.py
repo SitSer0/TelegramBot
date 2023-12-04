@@ -2,10 +2,7 @@ from telebot import types
 from room_manager import RoomManager
 from player_stats import get_user_stats, update_user_stats
 from game_logic import Game
-
-room_manager = RoomManager()
-waiting_for_room_code = {}
-rooms = {}
+from game_logic import kMagicRed, kMagicYellow, kMagicWhite
 
 """
 Модуль обработчиков для Telegram-бота игры '4 в ряд'.
@@ -16,7 +13,12 @@ rooms = {}
 
 """
 
+
 def initialize_handlers(bot):
+    room_manager = RoomManager()
+    waiting_for_room_code = {}
+    rooms = {}
+
     @bot.message_handler(commands=['start'])
     def send_welcome(message):
         """
@@ -48,7 +50,8 @@ def initialize_handlers(bot):
         :param call:
         :return:
         """
-        bot.send_message(call.message.chat.id, "Для выхода в начальное меню еще раз наберите /start, далее вы сможете через кнопки прочувствовать весь функционал данного бота ;)")
+        bot.send_message(call.message.chat.id,
+                         "Для выхода в начальное меню еще раз наберите /start, далее вы сможете через кнопки прочувствовать весь функционал данного бота ;)")
 
     @bot.callback_query_handler(func=lambda call: call.data == "join_room")
     def handle_join_room(call):
@@ -107,7 +110,6 @@ def initialize_handlers(bot):
 
         game.switch_player()
         room['current_player'] = room['players'][0] if call.from_user.id == room['players'][1] else room['players'][1]
-
 
     @bot.callback_query_handler(func=lambda call: call.data == "stats")
     def send_user_stats(call):
@@ -204,12 +206,12 @@ def initialize_handlers(bot):
             row_buttons = []
             for col in range(game.cols):
                 cell = game.board[row][col]
-                if cell == '🔴':
-                    button_text = "🔴"
-                elif cell == '🟡':
-                    button_text = "🟡"
+                if cell == kMagicRed:
+                    button_text = kMagicRed
+                elif cell == kMagicYellow:
+                    button_text = kMagicYellow
                 else:
-                    button_text = "⚪"
+                    button_text = kMagicWhite
                 callback_data = f"play_{col}_{room_id}"
                 row_buttons.append(types.InlineKeyboardButton(text=button_text, callback_data=callback_data))
             markup.row(*row_buttons)

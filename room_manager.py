@@ -14,6 +14,7 @@ import random
 import string
 from game_logic import Game
 
+
 class RoomManager:
     def __init__(self):
         """Инициализация менеджера комнат с пустым словарем комнат."""

@@ -21,6 +21,7 @@ cursor.execute('''
 conn.commit()
 conn.close()
 
+
 def update_user_stats(user_id, win=True):
     """
     Обновляет статистику пользователя в базе данных.
@@ -37,10 +38,12 @@ def update_user_stats(user_id, win=True):
         losses += int(not win)
         cursor.execute("UPDATE user_stats SET wins = ?, losses = ? WHERE user_id = ?", (wins, losses, user_id))
     else:
-        cursor.execute("INSERT INTO user_stats (user_id, wins, losses) VALUES (?, ?, ?)", (user_id, int(win), int(not win)))
+        cursor.execute("INSERT INTO user_stats (user_id, wins, losses) VALUES (?, ?, ?)",
+                       (user_id, int(win), int(not win)))
 
     conn.commit()
     conn.close()
+
 
 def get_user_stats(user_id):
     """

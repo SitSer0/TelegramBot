@@ -6,8 +6,15 @@
 
 """
 
+kMagicRed = '🔴'
+kMagicYellow = '🟡'
+kMagicWhite = '⚪'
+kMagicThree = 3
+kMagicFour = 4
+
+
 class Game:
-    def __init__(self, rows=6, cols=7, red='🔴', yellow='🟡'):
+    def __init__(self, rows=6, cols=7, red=kMagicRed, yellow=kMagicYellow):
         self.rows = rows
         self.cols = cols
         self.board = [[' ' for _ in range(cols)] for _ in range(rows)]
@@ -32,8 +39,7 @@ class Game:
         Меняет текущего игрока на следующего.
         :return:
         """
-        print(self.current_player)
-        self.current_player = '🟡' if self.current_player == '🔴' else '🔴'
+        self.current_player = kMagicYellow if self.current_player == kMagicRed else kMagicRed
 
     def print_board(self):
         """
@@ -44,25 +50,29 @@ class Game:
             print('|' + '|'.join(row) + '|')
         print('+---' * self.cols + '+')
 
-
     def check_winner(self):
         """
         Проверяет, выиграл ли текущий игрок. Возвращает True, если обнаружен выигрышный ряд.
         :return:
         """
         for row in range(self.rows):
-            for col in range(self.cols - 3):
-                if self.board[row][col] == self.current_player and all(self.board[row][col + i] == self.current_player for i in range(1, 4)):
+            for col in range(self.cols - kMagicThree):
+                if self.board[row][col] == self.current_player and all(
+                        self.board[row][col + i] == self.current_player for i in range(1, kMagicFour)):
                     return True
-        for row in range(self.rows - 3):
+        for row in range(self.rows - kMagicThree):
             for col in range(self.cols):
-                if self.board[row][col] == self.current_player and all(self.board[row + i][col] == self.current_player for i in range(1, 4)):
+                if self.board[row][col] == self.current_player and all(
+                        self.board[row + i][col] == self.current_player for i in range(1, kMagicFour)):
                     return True
-        for row in range(self.rows - 3):
-            for col in range(self.cols - 3):
-                if self.board[row][col] == self.current_player and all(self.board[row + i][col + i] == self.current_player for i in range(1, 4)):
+        for row in range(self.rows - kMagicThree):
+            for col in range(self.cols - kMagicThree):
+                if self.board[row][col] == self.current_player and all(
+                        self.board[row + i][col + i] == self.current_player for i in range(1, kMagicFour)):
                     return True
-                if self.board[row + 3][col] == self.current_player and all(self.board[row + 3 - i][col + i] == self.current_player for i in range(1, 4)):
+                if self.board[row + kMagicThree][col] == self.current_player and all(
+                        self.board[row + kMagicThree - i][col + i] == self.current_player for i in
+                        range(1, kMagicFour)):
                     return True
         return False
 

@@ -1,8 +1,10 @@
 import telebot
-# t.me/MIPT_4_v_ryad_bot
+from setting.gitignore import BOT_TOKEN
+
 from handlers import initialize_handlers
+
 """Инициализация бота"""
-bot = telebot.TeleBot('6495942120:AAEG72ekxZYrGtWOwQMsfNw3SUxraMLVSBw')
+bot = telebot.TeleBot(BOT_TOKEN)
 """Инициализация всех команд для общения с ботом"""
 initialize_handlers(bot)
 
